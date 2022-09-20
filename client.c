@@ -6,7 +6,7 @@
 /*   By: fruiz-ca <fruiz-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:54:14 by fruiz-ca          #+#    #+#             */
-/*   Updated: 2022/09/16 12:30:14 by fruiz-ca         ###   ########.fr       */
+/*   Updated: 2022/09/20 10:01:12 by fruiz-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int deliver_to_server (unsigned char c, int pid)
         else
             kill (pid, SIGUSR1);
         usleep(100);
+        i--;
     }
     return (0);
 }

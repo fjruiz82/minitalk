@@ -6,7 +6,7 @@
 /*   By: fruiz-ca <fruiz-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:54:19 by fruiz-ca          #+#    #+#             */
-/*   Updated: 2022/09/16 12:29:10 by fruiz-ca         ###   ########.fr       */
+/*   Updated: 2022/09/20 10:02:04 by fruiz-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 
 void handler_from_client (int signum)
 {
-    static unsigned char c;
-    static int bit;
+    static unsigned char c = 0;
+    static int bit = 7;
 
-    c = 0;
-    bit = 0;
+    //c = 0;
+    //bit = 7;
     if (signum == SIGUSR2)
         c = (1 << bit) | c;
     bit--;
@@ -29,7 +29,7 @@ void handler_from_client (int signum)
         if (c == '\0')
         {
             bit = 7;
-            write(1,"\n",1);
+            printf("\n");
             return ;
         }
         printf("%c", c);

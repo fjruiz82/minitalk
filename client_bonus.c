@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fruiz-ca <fruiz-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/16 11:54:14 by fruiz-ca          #+#    #+#             */
-/*   Updated: 2022/09/29 10:14:27 by fruiz-ca         ###   ########.fr       */
+/*   Created: 2022/09/29 10:37:56 by fruiz-ca          #+#    #+#             */
+/*   Updated: 2022/09/29 12:43:46 by fruiz-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,28 @@ int deliver_to_server (unsigned char c, int pid)
             kill (pid, SIGUSR2);
         else
             kill (pid, SIGUSR1);
+        //cambiar a 500? pq?
         usleep(100);
         i--;
     }
     return (0);
 }
 
-int main(int argc, char **argv)
+void confirmation_arrival (int signum)
+{
+    static int received = 0;
+
+    if (signum == SIGUSR2)
+        ++received;
+    else
+    {
+        printf("\n%d Successful delivery", received);
+        exit(0);
+    }
+
+}
+
+int main (int argc, char **argv)
 {
     char *str;
     int i;
@@ -47,10 +62,14 @@ int main(int argc, char **argv)
     }
     str = argv[2];
     i = 0;
+    signal(SIGUSR1, confirmation_arrival);
+    signal(SIGUSR2, confirmation_arrival);
     while (strlen(str) >= i)
     {
         deliver_to_server(str[i], atoi(argv[1]));
         i++;
     }
+    while (1)
+        pause();
     return (0);
 }
